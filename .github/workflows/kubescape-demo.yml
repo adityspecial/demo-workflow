@@ -1,0 +1,22 @@
+name: kubescape
+on:
+ [push]
+pull_request:
+branches:[main]
+jobs:
+  nsa-security-check :
+    runs-on: ubuntu-latest
+    steps:
+       steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      - name: Install Kubescape
+        run: |
+          curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
+
+       - name: Scan YAML files with Kubescape
+        run: kubescape scan framework nsa *.yaml
